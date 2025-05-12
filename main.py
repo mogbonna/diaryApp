@@ -84,11 +84,17 @@ def delete_entry():
         choice = int(input("\nEnter the entry number to delete: "))
         if 1 <= choice <= len(lines):
             deleted = lines.pop(choice - 1)
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+            # Write deleted entry to recycle bin
+            with open("deleted_entries.txt", "a") as bin_file:
+                bin_file.write(f"[Deleted on {timestamp}] {deleted}")
+
+            # Update the original file
             with open("diary.txt", "w") as diary:
                 diary.writelines(lines)
 
-            print(f"Deleted entry: {deleted.strip()}\n")
+            print(f"Moved to recycle bin: {deleted.strip()}\n")
         else:
             print("Invalid entry number.\n")
 
