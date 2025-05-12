@@ -68,6 +68,35 @@ def edit_entry():
     except ValueError:
         print("Please enter a valid number.\n")
 
+def delete_entry():
+    try:
+        with open("diary.txt", "r") as diary:
+            lines = diary.readlines()
+
+        if not lines:
+            print("No entries to delete.\n")
+            return
+
+        print("\n--- Diary Entries ---")
+        for i, line in enumerate(lines):
+            print(f"{i + 1}. {line.strip()}")
+
+        choice = int(input("\nEnter the entry number to delete: "))
+        if 1 <= choice <= len(lines):
+            deleted = lines.pop(choice - 1)
+
+            with open("diary.txt", "w") as diary:
+                diary.writelines(lines)
+
+            print(f"Deleted entry: {deleted.strip()}\n")
+        else:
+            print("Invalid entry number.\n")
+
+    except FileNotFoundError:
+        print("No diary file found.\n")
+    except ValueError:
+        print("Please enter a valid number.\n")
+
 # Main Menu
 while True:
     print("==== My Diary App ====")
@@ -75,7 +104,8 @@ while True:
     print("2. View All Entries")
     print("3. Search Entries")
     print("4. Edit Entry")
-    print("5. Exit")
+    print("5. Delete Entry")
+    print("6. Exit")
 
     choice = input("Choose an option (1-5): ")
 
@@ -88,6 +118,8 @@ while True:
     elif choice == "4":
         edit_entry()
     elif choice == "5":
+        delete_entry()
+    elif choice == "6":
         print("Goodbye!")
         break
     else:
